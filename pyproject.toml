@@ -7,7 +7,11 @@ authors = [
     { name = "alokKumarSingh89", email = "itsaloksingh2011@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "openai>=3.24.0",
+    "pydantic-settings>=2.15.0",
+    "python-dotenv>=1.2.4",
+]
 
 [project.scripts]
 agentdesk-ai = "agentdesk_ai:main"
