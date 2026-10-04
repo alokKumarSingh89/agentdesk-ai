@@ -1,44 +1,53 @@
-from packages.ai.providers.openai_provider import (
-    OpenAIProvider
-)
-import openai
 
-def main()->None:
+from packages.ai.providers.openai_provider import (
+    OpenAIProvider,
+)
+
+
+def main() -> None:
     provider = OpenAIProvider()
+
     print("Welcome to AgentDesk AI")
+
     question = input("Ask something: ").strip()
-    
+
     if not question:
         print("Question cannot be empty.")
         return
-    
+
     try:
-        answer = provider.generate(question)
-        print("\nAgentDesk Response:")
-        print(answer)
-    except openai.AuthenticationError as exc:
-        print(f"Authentication failed: {exc}")
+        response = provider.generate(question)
 
-    except openai.RateLimitError as exc:
-        print(f"Rate limit or quota exceeded: {exc}")
-
-    except openai.BadRequestError as exc:
-        print(f"Invalid API request: {exc}")
-
-    except openai.APIConnectionError as exc:
-        print(f"Network/API connection failed: {exc}")
-
-    except openai.APIStatusError as exc:
-        print(
-            f"OpenAI API error: "
-            f"HTTP {exc.status_code}"
-        )
     except Exception:
         print(
             "AI request failed. Check your API "
             "configuration and provider access."
         )
         raise SystemExit(1)
-    
+
+    print("\n--- AI RESPONSE ---")
+    print(response.content)
+
+    print("\n--- USAGE METADATA ---")
+    print(f"Model: {response.model}")
+
+    usage = response.usage
+
+    print(f"Input tokens: {usage.input_tokens}")
+    print(f"Output tokens: {usage.output_tokens}")
+    print(f"Total tokens: {usage.total_tokens}")
+
+    if usage.estimated_cost_usd is not None:
+        print(
+            f"Estimated cost: "
+            f"${usage.estimated_cost_usd:.8f}"
+        )
+    else:
+        print(
+            "Estimated cost: unavailable "
+            "(configure model pricing)"
+        )
+
+
 if __name__ == "__main__":
     main()
