@@ -1,3 +1,4 @@
+"""Pydantic schemas for LLM responses."""
 from decimal import Decimal
 
 from pydantic import BaseModel, Field

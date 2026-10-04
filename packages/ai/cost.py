@@ -1,3 +1,4 @@
+"""LLM cost calculation utilities."""
 from decimal import Decimal
 
 
@@ -16,14 +17,12 @@ def calculate_llm_cost(
 
     Returns None when pricing is unavailable.
     """
-    
     if input_tokens < 0 or output_tokens < 0:
         raise ValueError(
             "Token counts cannot be negative."
         )
     if input_price is None or output_price is None:
         return None
-    
     if input_price < 0 or output_price < 0:
         raise ValueError(
             "Token prices cannot be negative."
