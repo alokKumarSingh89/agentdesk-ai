@@ -1,6 +1,7 @@
 from typing import Protocol, runtime_checkable
 
 from packages.ai.inquiry import CustomerInquiry
+from packages.ai.memory.models import ChatMessage
 from packages.ai.schemas import LLMResponse
 
 @runtime_checkable
@@ -19,4 +20,10 @@ class LLMProvider(Protocol):
         self,
         message: str,
     ) -> CustomerInquiry:
+        ...
+    
+    def chat(
+        self,
+        messages: list[ChatMessage],
+    ) -> LLMResponse:
         ...
