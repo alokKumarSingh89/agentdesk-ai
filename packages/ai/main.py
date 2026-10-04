@@ -6,6 +6,8 @@ from packages.ai.providers.openai_provider import (
 from packages.ai.services.inquiry_service import (
     InquiryService,
 )
+from packages.ai.memory.store import ConversationStore
+from packages.ai.services.chat_service import ChatService
 
 
 def run_chat(provider: OpenAIProvider) -> None:
@@ -54,6 +56,42 @@ def run_inquiry_classifier(
     )
     
 
+def run_multi_turn_chat(
+    provider: OpenAIProvider,
+) -> None:
+    store = ConversationStore()
+    service = ChatService(
+        provider=provider,
+        store=store,
+        max_history_messages=10,
+    )
+    conversation_id = service.create_conversation()
+
+    print(f"\nConversation: {conversation_id}")
+    print("Type 'exit' to finish.\n")
+    while True:
+        message = input("You: ").strip()
+        if message.lower() == "exit":
+            break
+
+        if not message:
+            continue
+        
+        try:
+            response = service.send_message(
+                conversation_id,
+                message,
+            )
+        except Exception:
+            print("AgentDesk: Request failed. Please retry.")
+            continue
+        
+        print(f"\nAgentDesk: {response.content}\n")
+
+        print(
+            f"[Tokens: {response.usage.total_tokens}]\n"
+        )
+
 def main() -> None:
     # Composition root:
     # Create and connect application dependencies.
@@ -67,6 +105,7 @@ def main() -> None:
 
     print("\n1. General AI Chat")
     print("2. Customer Inquiry Classification")
+    print("3. Multi-turn AI Chat")
 
     choice = input("\nSelect option: ").strip()
     try:
@@ -74,6 +113,8 @@ def main() -> None:
             run_chat(provider)
         elif choice == "2":
             run_inquiry_classifier(inquiry_service)
+        elif choice == "3":
+            run_multi_turn_chat(provider)
         else:
             print("Invalid option.")
     except ValueError as error:
