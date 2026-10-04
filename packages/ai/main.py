@@ -3,6 +3,9 @@
 from packages.ai.providers.openai_provider import (
     OpenAIProvider,
 )
+from packages.ai.services.inquiry_service import (
+    InquiryService,
+)
 
 
 def run_chat(provider: OpenAIProvider) -> None:
@@ -39,10 +42,10 @@ def run_chat(provider: OpenAIProvider) -> None:
       
 
 def run_inquiry_classifier(
-    provider: OpenAIProvider,
+    service: InquiryService,
 ) -> None:
     message = input("\nEnter customer message: ").strip()
-    inquiry = provider.classify_inquiry(message)
+    inquiry = service.classify(message)
 
     print("\n--- CLASSIFICATION RESULT ---")
 
@@ -52,7 +55,13 @@ def run_inquiry_classifier(
     
 
 def main() -> None:
+    # Composition root:
+    # Create and connect application dependencies.
     provider = OpenAIProvider()
+
+    inquiry_service = InquiryService(
+        provider=provider
+    )
 
     print("\nWelcome to AgentDesk AI")
 
@@ -64,7 +73,7 @@ def main() -> None:
         if choice == "1":
             run_chat(provider)
         elif choice == "2":
-            run_inquiry_classifier(provider)
+            run_inquiry_classifier(inquiry_service)
         else:
             print("Invalid option.")
     except ValueError as error:
