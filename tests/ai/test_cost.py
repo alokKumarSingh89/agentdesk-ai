@@ -1,3 +1,4 @@
+"""Tests for LLM cost calculation."""
 from decimal import Decimal
 
 import pytest
