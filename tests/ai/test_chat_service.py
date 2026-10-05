@@ -133,13 +133,32 @@ def test_history_limit_is_applied():
 
     conversation_id = service.create_conversation()
 
-    service.send_message(conversation_id, "First")
-    service.send_message(conversation_id, "Second")
-    service.send_message(conversation_id, "Third")
+    service.send_message(
+        conversation_id,
+        "First",
+    )
 
-    assert len(provider.received_messages) == 3
+    service.send_message(
+        conversation_id,
+        "Second",
+    )
 
-    assert provider.received_messages[-1].content == "Third"
-    assert provider.received_messages[0].content == (
+    service.send_message(
+        conversation_id,
+        "Third",
+    )
+
+    messages = provider.received_messages
+
+    assert len(messages) == 3
+
+    assert messages[0].role == MessageRole.USER
+    assert messages[0].content == "Second"
+
+    assert messages[1].role == MessageRole.ASSISTANT
+    assert messages[1].content == (
         "This is a fake AI response."
     )
+
+    assert messages[2].role == MessageRole.USER
+    assert messages[2].content == "Third"
