@@ -64,6 +64,7 @@ def run_multi_turn_chat(
         provider=provider,
         store=store,
         max_history_messages=10,
+        max_context_tokens=2000,
     )
     conversation_id = service.create_conversation()
 
