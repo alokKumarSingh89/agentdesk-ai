@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     openai_api_key: str
 
     openai_model: str = "gpt-5-mini"
+    
+    embedding_model: str = "text-embedding-3-small"
 
     # USD per million tokens.
     # Optional until pricing is configured.

@@ -11,6 +11,7 @@ from packages.ai.schemas import (
     LLMResponse,
     TokenUsage,
 )
+from packages.ai.embeddings import EmbeddingResult
 
 class OpenAIProvider:
     def __init__(self):
@@ -141,4 +142,26 @@ class OpenAIProvider:
                 total_tokens=usage.total_tokens,
                 estimated_cost_usd=estimated_cost,
             ),
+        )
+    def embed(
+        self,
+        text: str,
+    ) -> EmbeddingResult:
+        text = text.strip()
+        if not text:
+            raise ValueError(
+                "Embedding text cannot be empty."
+            )
+        response = self.client.embeddings.create(
+            model=settings.embedding_model,
+            input=text
+        )
+        if not response.data:
+            raise RuntimeError(
+                "Embedding response contains no data."
+            )
+        return EmbeddingResult(
+            model=response.model,
+            vector=response.data[0].embedding,
+            token_usage=response.usage.total_tokens,
         )
