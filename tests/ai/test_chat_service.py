@@ -18,17 +18,19 @@ class FakeChatProvider:
     def __init__(self) -> None:
         self.received_messages = []
         self.should_fail = False
+        self.received_context = None
 
     def chat(
         self,
         messages: list[ChatMessage],
+        context: str | None = None,
     ) -> LLMResponse:
 
         self.received_messages = [
             message.model_copy(deep=True)
             for message in messages
         ]
-
+        self.received_context = context
         if self.should_fail:
             raise RuntimeError("Simulated API failure")
 
