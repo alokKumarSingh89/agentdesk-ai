@@ -3,6 +3,7 @@ from typing import Protocol, runtime_checkable
 from packages.ai.inquiry import CustomerInquiry
 from packages.ai.memory.models import ChatMessage
 from packages.ai.schemas import LLMResponse
+from packages.ai.embeddings import EmbeddingResult
 
 @runtime_checkable
 class LLMProvider(Protocol):
@@ -27,4 +28,10 @@ class LLMProvider(Protocol):
         messages: list[ChatMessage],
         context: str | None = None,
     ) -> LLMResponse:
+        ...
+    
+    def embed(
+        self,
+        text: str,
+    ) -> EmbeddingResult:
         ...
