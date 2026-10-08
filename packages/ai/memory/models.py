@@ -14,7 +14,7 @@ class ChatMessage(BaseModel):
     
 class Conversation(BaseModel):
     id: UUID = Field(default_factory=uuid4)
-
+    summary: str | None = None
     messages: list[ChatMessage] = Field(
         default_factory=list
     )

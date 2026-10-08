@@ -86,19 +86,30 @@ class OpenAIProvider:
     def chat(
         self,
         messages: list[ChatMessage],
+        context: str | None = None,
     ) -> LLMResponse:
         if not messages:
             raise ValueError(
                 "Messages cannot be empty."
             )
-        
+            
+        instructions = (
+            "You are AgentDesk AI, a helpful "
+            "business assistant. Use the supplied "
+            "conversation history to understand "
+            "follow-up questions. Never invent "
+            "company-specific information."
+        )
+        if context:
+            instructions += (
+                "\n\nTRUSTED CONVERSATION CONTEXT:\n"
+                f"{context}"
+                "\n\nUse this context only as memory "
+                "from the earlier conversation."
+            )
         response = self.client.responses.create(
             model=settings.openai_model,
-            instructions=(
-                "You are AgentDesk AI, a helpful business assistant."
-                " Use the supplied conversation history to understand follow-up questions."
-                " Never invent company-specific information."
-            ),
+            instructions=instructions,
             input=[
                 {
                     "role": message.role.value,

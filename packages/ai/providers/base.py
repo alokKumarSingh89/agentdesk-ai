@@ -25,5 +25,6 @@ class LLMProvider(Protocol):
     def chat(
         self,
         messages: list[ChatMessage],
+        context: str | None = None,
     ) -> LLMResponse:
         ...

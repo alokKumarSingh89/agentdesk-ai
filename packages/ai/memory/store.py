@@ -72,3 +72,24 @@ class ConversationStore:
             message.model_copy(deep=True)
             for message in messages
         ]
+    
+    def update_summary(
+        self,
+        conversation_id: UUID,
+        summary: str,
+    ) -> None:
+        conversation = self._conversations.get(
+            conversation_id
+        )
+        if conversation is None:
+            raise KeyError(
+                "Conversation not found."
+            )
+
+        summary = summary.strip()
+        if not summary:
+            raise ValueError(
+                "Conversation summary cannot be empty."
+            )
+
+        conversation.summary = summary
