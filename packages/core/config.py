@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     openai_model: str = "gpt-5-mini"
     
     embedding_model: str = "text-embedding-3-small"
+    qdrant_url: str = "http://localhost:6333"
+    qdrant_collection: str = "agentdesk_knowledge"
+    embedding_dimensions: int = 1536
 
     # USD per million tokens.
     # Optional until pricing is configured.
