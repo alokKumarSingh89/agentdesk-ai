@@ -1,0 +1,32 @@
+[
+    {
+        "id": "refund-timing",
+        "question": "How long does a refund take after approval?",
+        "relevant_sources": [
+            "refund-policy.txt"
+        ],
+        "expected_answer_terms": [
+            "5 business days"
+        ],
+        "should_abstain": false
+    },
+    {
+        "id": "damaged-product",
+        "question": "What should I do if my product arrives damaged?",
+        "relevant_sources": [
+            "refund-policy.txt"
+        ],
+        "expected_answer_terms": [
+            "support",
+            "order number"
+        ],
+        "should_abstain": false
+    },
+    {
+        "id": "unknown-ceo",
+        "question": "Who is the CEO of this company?",
+        "relevant_sources": [],
+        "expected_answer_terms": [],
+        "should_abstain": true
+    }
+]
