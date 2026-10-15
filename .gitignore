@@ -3,3 +3,5 @@
 !.env.example
 .venv/
 __pycache__/
+
+artifacts/
